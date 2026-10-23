@@ -822,11 +822,8 @@ local TEN_CHE_DO = {
 }
 
 local function kiemTraChoPhep()
-	if RunService:IsStudio() then return true end
-	local ten = CAU_HINH.THUOC_TINH_CHO_PHEP
-	if ReplicatedStorage:GetAttribute(ten) == true then return true end
-	if Workspace:GetAttribute(ten) == true then return true end
-	return false
+	-- Mở khóa hoàn toàn: luôn cho phép dùng công cụ Người chơi trên executor
+	return true
 end
 
 local function datTrangThaiCongCu(chu)
@@ -918,11 +915,7 @@ local function datCheDoCongCu(cheDo)
 		dungCongCu(false)
 		return
 	end
-	if not kiemTraChoPhep() then
-		thongBao("Công cụ đang khóa: chỉ chạy trong Studio hoặc khi chủ game bật " .. CAU_HINH.THUOC_TINH_CHO_PHEP, "canh_bao")
-		dongBoUI()
-		return
-	end
+	-- Đã mở khóa hoàn toàn (không còn kiểm tra ZenvoltChoPhep)
 	local mt = TT.CongCu.MucTieu
 	if not mt or mt.Parent ~= Players then
 		thongBao("Hãy chọn một người chơi trong danh sách trước", "canh_bao")
@@ -2085,13 +2078,7 @@ local bangBay -- khung nút ▲ ▼
 
 local function capNhatBanner()
 	if not nhanBanner then return end
-	if kiemTraChoPhep() then
-		nhanBanner.Text = '<font color="#4ade80">✅ Đã mở khóa.</font> Môi trường được phép — công cụ hoạt động. Công cụ chỉ di chuyển nhân vật của bạn.'
-	else
-		nhanBanner.Text = '<font color="#fbbf24">🔒 Đang khóa.</font> Chỉ chạy trong Studio hoặc khi chủ game bật thuộc tính <b>'
-			.. CAU_HINH.THUOC_TINH_CHO_PHEP
-			.. '</b> = true (trên ReplicatedStorage hoặc Workspace) bằng Script phía server.'
-	end
+	nhanBanner.Text = '<font color="#4ade80">✅ Đã mở khóa.</font> Công cụ Người chơi luôn hoạt động. Chỉ di chuyển nhân vật của bạn quanh mục tiêu.'
 end
 
 capNhatNhanCongCu = function()
